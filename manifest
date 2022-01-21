@@ -1,0 +1,12 @@
+: 1
+name: rbs
+version: 0.1.0-a.0.z
+summary: rbs C++ executable
+license: other: proprietary ; Not free/open source.
+description-file: README.md
+url: https://example.org/rbs
+email: marcgile@macbook.local
+#build-error-email: marcgile@macbook.local
+depends: * build2 >= 0.14.0
+depends: * bpkg >= 0.14.0
+#depends: libhello ^1.0.0
