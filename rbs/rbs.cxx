@@ -1,14 +1,12 @@
 #include <iostream>
 
-int main (int argc, char* argv[])
-{
-  using namespace std;
+int main(int argc, char* argv[]) {
 
-  if (argc < 2)
-  {
-    cerr << "error: missing name" << endl;
+  if (argc < 3) {
+    std::cerr << "Usage: " << argv[0] << " [knowledge_base] [fact_base]" << std::endl;
     return 1;
   }
 
-  cout << "Hello, " << argv[1] << '!' << endl;
+  std::cout << "Knowledge base: " << argv[1] << std::endl;
+  std::cout << "Fact base:      " << argv[2] << std::endl;
 }
