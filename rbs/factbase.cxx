@@ -3,30 +3,27 @@
 #include <fstream>
 #include <iostream>
 
-FactBase *FactBase::readFromFile(std::string_view file) {
-  std::ifstream fs(file);
-  auto fb = new FactBase();;
-  int numFacts;
 
-  fs >> numFacts; fs.ignore();
-  fb->facts.resize(numFacts);
+std::istream &operator>>(std::istream &is, FactBase &fb) {
+  int numFacts; is >> numFacts; is.ignore();
+  fb.facts.resize(numFacts);
   for (unsigned i = 0; i < numFacts; i++) {
-    std::string fact; fs >> fact; fs.ignore(4); fact.pop_back();
-    float cert;       fs >> cert;
+    std::string fact; is >> fact; is.ignore(4); fact.pop_back();
+    float cert;       is >> cert;
 
-    fb->facts[i] = {fact, cert};
+    fb.facts[i] = {fact, cert};
   }
 
-  fs >> fb->obj >> fb->obj;
+  is >> fb.obj >> fb.obj;
 
-  return fb;
+  return is;
 }
 
-void FactBase::printBase() {
-  std::cout << "Num facts: " << facts.size() << std::endl;
-
-  for (auto [fact, cert]: facts)
+std::ostream &operator<<(std::ostream &os, FactBase const& fb) {
+  os << "Num facts: " << fb.facts.size() << std::endl;
+  for (auto [fact, cert]: fb.facts)
     std::cout << "Fact: " << fact << ", cert: " << cert << std::endl;
+  std::cout << "Objective: " << fb.obj << std::endl;
 
-  std::cout << "Objective: " << obj << std::endl;
+  return os;
 }

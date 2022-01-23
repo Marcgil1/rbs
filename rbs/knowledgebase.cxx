@@ -4,37 +4,31 @@
 #include <fstream>
 
 
-KnowledgeBase *KnowledgeBase::readFromFile(std::string_view file) {
-  std::ifstream fs(file);
-  auto *kb = new KnowledgeBase;
-  size_t numRules; fs >> numRules; fs.ignore(); // "[newline]"
+KnowledgeBase::KnowledgeBase() : rules() {}
 
-  kb->rules.resize(numRules);
+std::istream &operator>>(std::istream &is, KnowledgeBase &kb) {
+  size_t numRules; is >> numRules; is.ignore(); // "[newline]"
+
+  kb.rules.resize(numRules);
   for (unsigned i = 0; i < numRules; i++) {
-    fs.ignore(7); // "RX: Si "
+    is.ignore(7); // "RX: Si "
     std::string input;
-    while (fs >> input) {
-      if      (input == "y")        kb->rules[i].type = RuleType::AND;
-      else if (input == "o")        kb->rules[i].type = RuleType::OR;
+    while (is >> input) {
+      if      (input == "y")        kb.rules[i].type = RuleType::AND;
+      else if (input == "o")        kb.rules[i].type = RuleType::OR;
       else if (input == "Entonces") break;
-      else                          kb->rules[i].pre.push_back(input);
+      else                          kb.rules[i].pre.push_back(input);
     }
-    fs >> input; input.pop_back(); kb->rules[i].pos = input;
-    fs.ignore(4); fs >> kb->rules[i].cert; fs.ignore();
+    is >> input; input.pop_back(); kb.rules[i].pos = input;
+    is.ignore(4); is >> kb.rules[i].cert; is.ignore();
   }
 
-  return kb;
+  return is;
 }
 
-void KnowledgeBase::printBase() {
-  std::cout << "Num rules: " << rules.size() << std::endl;
-
-  for (auto r: rules) {
-    std::cout << "Rule(pre=[";
-    for (auto x: r.pre)
-      std::cout << x << " ";
-    std::cout << "], pos=" << r.pos << ", cert=" << r.cert << ", type="
-              << ((r.type == RuleType::AND) ? "AND" : "OR") << ")"
-              << std::endl;
-  }
+std::ostream &operator<<(std::ostream &os, KnowledgeBase const &kb) {
+  os << "Num rules: " << kb.rules.size() << std::endl;
+  for (auto rule: kb.rules)
+    os << rule << std::endl;
+  return os;
 }

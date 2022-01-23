@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ostream>
 #include <vector>
 #include <string>
 
@@ -7,8 +8,10 @@
 // Fact type. -----------------------------------------------------------------
 typedef std::string Fact;
 
-// Rule type. -----------------------------------------------------------------
+//Rule type. -----------------------------------------------------------------
 enum class RuleType { AND, OR };
+
+std::ostream &operator<<(std::ostream &os, RuleType type);
 
 // Rule -----------------------------------------------------------------------
 struct Rule {
@@ -17,3 +20,5 @@ struct Rule {
   float cert;
   RuleType type = RuleType::AND;
 };
+
+std::ostream &operator<<(std::ostream &os, Rule r);

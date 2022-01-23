@@ -2,14 +2,17 @@
 
 #include "defs.hxx"
 
+#include <istream>
+#include <ostream>
 #include <vector>
 #include <string>
 
 
 class KnowledgeBase {
 public:
-  static KnowledgeBase *readFromFile(std::string_view file);
-  void printBase();
+  KnowledgeBase();
+  friend std::ostream &operator<<(std::ostream &os, KnowledgeBase const& kb);
+  friend std::istream &operator>>(std::istream &is, KnowledgeBase &kb);
 
 private:
   std::vector<Rule> rules;
