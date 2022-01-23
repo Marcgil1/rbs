@@ -1,5 +1,6 @@
 #include "defs.hxx"
 #include "factbase.hxx"
+#include "knowledgeBase.hxx"
 
 #include <memory>
 #include <string>
@@ -19,7 +20,9 @@ int main(int argc, char* argv[]) {
 
   std::string kbFile(argv[1]);
   std::string fbFile(argv[2]);
+  auto kb = std::unique_ptr<KnowledgeBase>(KnowledgeBase::readFromFile(kbFile));
   auto fb = std::unique_ptr<FactBase>(FactBase::readFromFile(fbFile));
 
+  kb->printBase();
   fb->printBase();
 }
