@@ -10,7 +10,9 @@
 
 class FactBase {
 public:
-  static FactBase *readFromFile(std::string_view file);
+  bool containsFact(Fact f);
+  void addFact(Fact f);
+
   friend std::ostream &operator<<(std::ostream &os, FactBase const& fb);
   friend std::istream &operator>>(std::istream &is, FactBase &fb);
 private:

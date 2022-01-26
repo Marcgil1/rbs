@@ -8,7 +8,7 @@
 // Fact type. -----------------------------------------------------------------
 typedef std::string Fact;
 
-//Rule type. -----------------------------------------------------------------
+//Rule type. ------------------------------------------------------------------
 enum class RuleType { AND, OR };
 
 std::ostream &operator<<(std::ostream &os, RuleType type);

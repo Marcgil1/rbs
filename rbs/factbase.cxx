@@ -4,6 +4,16 @@
 #include <iostream>
 
 
+bool FactBase::containsFact(Fact f) {
+  return end(facts) != find_if(begin(facts), end(facts),
+                               [&] (auto p) { return p.first == f; });
+}
+
+void FactBase::addFact(Fact f) {
+  // TODO: When implementing certainty factors, this should be modified.
+  facts.push_back({ f, 0.0 });
+}
+
 std::istream &operator>>(std::istream &is, FactBase &fb) {
   int numFacts; is >> numFacts; is.ignore();
   fb.facts.resize(numFacts);

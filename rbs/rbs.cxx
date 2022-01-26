@@ -3,7 +3,6 @@
 #include "knowledgeBase.hxx"
 
 #include <fstream>
-#include <memory>
 #include <string>
 #include <iostream>
 
