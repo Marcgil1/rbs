@@ -8,8 +8,9 @@ InferenceEngine::InferenceEngine(FactBase fb, KnowledgeBase kb)
     : fb(fb), kb(kb) {}
 
 bool InferenceEngine::verify(Fact goal, std::vector<Rule>& mem) {
-  if (fb.containsFact(goal))
+  if (fb.containsFact(goal)) {
     return true;
+  }
 
   bool verified = false;
   std::vector<Rule> conflictSet;
@@ -31,13 +32,13 @@ bool InferenceEngine::verify(Fact goal, std::vector<Rule>& mem) {
 }
 
 Rule InferenceEngine::solve(std::vector<Rule> &conflictSet) {
-  auto res = conflictSet[conflictSet.size() - 1];
-  conflictSet.resize(conflictSet.size() - 1);
+  auto res = conflictSet.back();
+  conflictSet.pop_back();
   return res;
 }
 
 Fact InferenceEngine::selectGoal(std::vector<Fact> &goals) {
-  auto res = goals[goals.size() - 1];
-  goals.resize(goals.size() - 1);
+  auto res = goals.back();
+  goals.pop_back();
   return res;
 }
