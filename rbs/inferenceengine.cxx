@@ -1,13 +1,13 @@
 #include "inferenceengine.hxx"
 
 #include <algorithm>
-#include <vector>
+#include <iostream>
 
 
 InferenceEngine::InferenceEngine(FactBase fb, KnowledgeBase kb)
     : fb(fb), kb(kb) {}
 
-bool InferenceEngine::verify(Fact goal) {
+bool InferenceEngine::verify(Fact goal, std::vector<Rule>& mem) {
   if (fb.containsFact(goal))
     return true;
 
@@ -20,10 +20,11 @@ bool InferenceEngine::verify(Fact goal) {
     verified = true;
     while (not newGoals.empty() and verified) {
       auto newGoal = selectGoal(newGoals);
-      verified = verify(newGoal);
+      verified = verify(newGoal, mem);
     }
     if (verified) {
       fb.addFact(goal);
+      mem.push_back(rule);
     }
   }
   return verified;

@@ -4,11 +4,14 @@
 #include "factbase.hxx"
 #include "knowledgebase.hxx"
 
+#include <vector>
+
 
 class InferenceEngine {
 public:
+
   InferenceEngine(FactBase fb, KnowledgeBase kb);
-  bool verify(Fact goal);
+  bool verify(Fact goal, std::vector<Rule>& mem);
 
 private:
   FactBase fb;

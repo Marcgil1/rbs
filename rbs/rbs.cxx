@@ -39,6 +39,16 @@ int main(int argc, char* argv[]) {
   std::cout << "----------------------------------------" << std::endl;
 
   InferenceEngine ie(fb, kb);
-  auto res = ie.verify(fb.getGoal());
-  std::cout << res << std::endl;
+  std::vector<Rule> mem;
+  auto res = ie.verify(fb.getGoal(), mem);
+
+  if (res) {
+    std::cout << "The goal could be inferred through the application of the "
+              << "following rules:" << std::endl;
+    for (auto rule: mem) {
+      std::cout << rule << std::endl;
+    }
+  } else {
+    std::cout << "The goal could not be inferred" << std::endl;
+  }
 }
