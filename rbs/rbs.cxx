@@ -1,6 +1,7 @@
 #include "defs.hxx"
 #include "factbase.hxx"
 #include "knowledgeBase.hxx"
+#include "inferenceengine.hxx"
 
 #include <fstream>
 #include <string>
@@ -15,6 +16,9 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
+  std::cout << "----------------------------------------" << std::endl;
+  std::cout << "- Program arguments --------------------" << std::endl;
+  std::cout << "----------------------------------------" << std::endl;
   std::cout << "Knowledge base: " << argv[1] << std::endl;
   std::cout << "Fact base:      " << argv[2] << std::endl;
 
@@ -24,6 +28,17 @@ int main(int argc, char* argv[]) {
   KnowledgeBase kb; kbFs >> kb;
   FactBase      fb; fbFs >> fb;
 
+  std::cout << "----------------------------------------" << std::endl;
+  std::cout << "- Content of files ---------------------" << std::endl;
+  std::cout << "----------------------------------------" << std::endl;
   std::cout << kb << std::endl;
   std::cout << fb << std::endl;
+
+  std::cout << "----------------------------------------" << std::endl;
+  std::cout << "- Program execution --------------------" << std::endl;
+  std::cout << "----------------------------------------" << std::endl;
+
+  InferenceEngine ie(fb, kb);
+  auto res = ie.verify(fb.getGoal());
+  std::cout << res << std::endl;
 }

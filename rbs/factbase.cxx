@@ -14,6 +14,10 @@ void FactBase::addFact(Fact f) {
   facts.push_back({ f, 0.0 });
 }
 
+Fact FactBase::getGoal() {
+  return obj;
+}
+
 std::istream &operator>>(std::istream &is, FactBase &fb) {
   int numFacts; is >> numFacts; is.ignore();
   fb.facts.resize(numFacts);
