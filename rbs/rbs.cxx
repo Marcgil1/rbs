@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
   std::cout << "----------------------------------------" << std::endl;
 
   InferenceEngine ie(fb, kb);
-  auto res = ie.verify("CACC");
+  auto res = ie.verify(fb.getGoal());
 
   std::cout << "The fact " << fb.getGoal() << " has certainty " << res << std::endl;
 }

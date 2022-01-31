@@ -20,8 +20,8 @@ private:
 
   Rule solve(std::vector<Rule>& conflictSet);
   Fact selectGoal(std::vector<Fact>& goals);
-  float certaintyAnd(float cert1, float cert2);
-  float certaintyOr(float cert1, float cert2);
+  float certaintyAnd(std::vector<Fact> const& pre);
+  float certaintyOr(std::vector<Fact> const& pre);
   float certaintyChain(float certRule, float cert);
   void certaintyCombine(std::optional<float>& acc, float cert);
 };

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iostream>
 #include <optional>
+#include <limits>
 
 
 InferenceEngine::InferenceEngine(FactBase fb, KnowledgeBase kb)
@@ -25,14 +26,10 @@ float InferenceEngine::verify(Fact goal) {
       certaintyCombine(cert, certaintyChain(rule.cert, verify(rule.pre[0])));
       break;
     case RuleType::AND:
-      certaintyCombine(
-          cert, certaintyChain(rule.cert, certaintyAnd(verify(rule.pre[0]),
-                                                       verify(rule.pre[1]))));
+      certaintyCombine(cert, certaintyChain(rule.cert, certaintyAnd(rule.pre)));
       break;
     case RuleType::OR:
-      certaintyCombine(
-          cert, certaintyChain(rule.cert, certaintyOr(verify(rule.pre[0]),
-                                                      verify(rule.pre[1]))));
+      certaintyCombine(cert, certaintyChain(rule.cert, certaintyOr(rule.pre)));
       break;
     }
     //std::cout << rule << " -- " << *cert << std::endl;
@@ -54,12 +51,18 @@ Fact InferenceEngine::selectGoal(std::vector<Fact> &goals) {
   return res;
 }
 
-float InferenceEngine::certaintyAnd(float cert1, float cert2) {
-  return std::min(cert1, cert2);
+float InferenceEngine::certaintyAnd(std::vector<Fact> const &pre) {
+  float res = std::numeric_limits<float>::max();
+  for (auto f: pre)
+    res = std::min(res, verify(f));
+  return res;
 }
 
-float InferenceEngine::certaintyOr(float cert1, float cert2) {
-  return std::max(cert1, cert2);
+float InferenceEngine::certaintyOr(std::vector<Fact> const &pre) {
+  float res = std::numeric_limits<float>::min();
+  for (auto f: pre)
+    res = std::max(res, verify(f));
+  return res;
 }
 
 float InferenceEngine::certaintyChain(float certRule, float cert) {
