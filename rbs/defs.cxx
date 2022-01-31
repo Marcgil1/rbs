@@ -3,8 +3,15 @@
 
 std::ostream &operator<<(std::ostream &os, RuleType type) {
   switch (type) {
-  case RuleType::AND: os << "AND"; break;
-  case RuleType::OR:  os << "OR";  break;
+  case RuleType::AND:
+    os << "AND";
+    break;
+  case RuleType::OR:
+    os << "OR";
+    break;
+  case RuleType::SINGLETON:
+    os << "SINGLETON";
+    break;
   }
   return os;
 }

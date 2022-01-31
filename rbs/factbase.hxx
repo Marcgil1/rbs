@@ -7,13 +7,12 @@
 #include <vector>
 #include <utility>
 #include <string>
+#include <optional>
 
 class FactBase {
 public:
-  bool containsFact(Fact f);
-  void addFact(Fact f);
-
-
+  float setCert(Fact f, float cert);
+  std::optional<float> getCert(Fact f);
   Fact getGoal();
 
   friend std::ostream &operator<<(std::ostream &os, FactBase const& fb);

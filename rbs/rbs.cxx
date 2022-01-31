@@ -8,7 +8,7 @@
 #include <iostream>
 
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
 
   if (argc < 3) {
     std::cerr << "Usage: " << argv[0] << " [knowledge_base] [fact_base]"
@@ -39,16 +39,7 @@ int main(int argc, char* argv[]) {
   std::cout << "----------------------------------------" << std::endl;
 
   InferenceEngine ie(fb, kb);
-  std::vector<Rule> mem;
-  auto res = ie.verify(fb.getGoal(), mem);
+  auto res = ie.verify("CACC");
 
-  if (res) {
-    std::cout << "The goal could be inferred through the application of the "
-              << "following rules:" << std::endl;
-    for (auto rule: mem) {
-      std::cout << rule << std::endl;
-    }
-  } else {
-    std::cout << "The goal could not be inferred" << std::endl;
-  }
+  std::cout << "The fact " << fb.getGoal() << " has certainty " << res << std::endl;
 }

@@ -4,14 +4,26 @@
 #include <iostream>
 
 
-bool FactBase::containsFact(Fact f) {
-  return end(facts) != find_if(begin(facts), end(facts),
-                               [&] (auto p) { return p.first == f; });
+float FactBase::setCert(Fact f, float cert) {
+  auto it = std::find_if(begin(facts), end(facts),
+                         [&] (auto p) { return p.first == f; });
+  if (it == end(facts)) {
+    facts.push_back({f, cert});
+  } else {
+    it->second = cert;
+  }
+
+  return cert;
 }
 
-void FactBase::addFact(Fact f) {
-  // TODO: When implementing certainty factors, this should be modified.
-  facts.push_back({ f, 0.0 });
+std::optional<float> FactBase::getCert(Fact f) {
+  auto it = std::find_if(begin(facts), end(facts),
+                         [&] (auto p) { return p.first == f; });
+  if (it == end(facts)) {
+    return std::nullopt;
+  } else {
+    return it->second;
+  }
 }
 
 Fact FactBase::getGoal() {

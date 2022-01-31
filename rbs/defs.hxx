@@ -9,7 +9,7 @@
 typedef std::string Fact;
 
 //Rule type. ------------------------------------------------------------------
-enum class RuleType { AND, OR };
+enum class RuleType { AND, OR, SINGLETON };
 
 std::ostream &operator<<(std::ostream &os, RuleType type);
 
@@ -18,7 +18,7 @@ struct Rule {
   std::vector<Fact> pre;
   Fact pos;
   float cert;
-  RuleType type = RuleType::AND;
+  RuleType type = RuleType::SINGLETON;
 };
 
 std::ostream &operator<<(std::ostream &os, Rule r);

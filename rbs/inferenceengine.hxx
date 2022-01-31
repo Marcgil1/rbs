@@ -4,6 +4,7 @@
 #include "factbase.hxx"
 #include "knowledgebase.hxx"
 
+#include <optional>
 #include <vector>
 
 
@@ -11,7 +12,7 @@ class InferenceEngine {
 public:
 
   InferenceEngine(FactBase fb, KnowledgeBase kb);
-  bool verify(Fact goal, std::vector<Rule>& mem);
+  float verify(Fact goal);
 
 private:
   FactBase fb;
@@ -19,4 +20,8 @@ private:
 
   Rule solve(std::vector<Rule>& conflictSet);
   Fact selectGoal(std::vector<Fact>& goals);
+  float certaintyAnd(float cert1, float cert2);
+  float certaintyOr(float cert1, float cert2);
+  float certaintyChain(float certRule, float cert);
+  void certaintyCombine(std::optional<float>& acc, float cert);
 };
