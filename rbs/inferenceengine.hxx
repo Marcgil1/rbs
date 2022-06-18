@@ -6,17 +6,20 @@
 
 #include <optional>
 #include <vector>
+#include <ostream>
 
 
 class InferenceEngine {
 public:
 
-  InferenceEngine(FactBase fb, KnowledgeBase kb);
+  InferenceEngine(FactBase fb, KnowledgeBase kb, std::ostream& log);
   float verify(Fact goal);
 
 private:
-  FactBase fb;
+  FactBase      fb;
   KnowledgeBase kb;
+  std::ostream& log;
+  size_t        callDepth;
 
   Rule solve(std::vector<Rule>& conflictSet);
   Fact selectGoal(std::vector<Fact>& goals);

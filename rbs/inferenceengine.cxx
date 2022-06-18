@@ -6,13 +6,23 @@
 #include <limits>
 
 
-InferenceEngine::InferenceEngine(FactBase fb, KnowledgeBase kb)
-    : fb(fb), kb(kb) {}
+InferenceEngine::InferenceEngine(FactBase fb, KnowledgeBase kb, std::ostream& log)
+  : fb(fb), kb(kb), log(log), callDepth(0) {}
 
 float InferenceEngine::verify(Fact goal) {
-  if (auto cert = fb.getCert(goal)) {
-    return cert.value();
+  for (int i = 0; i < callDepth; i++) {
+      log << " ";
   }
+  log << "- verifying goal [" << goal << "]" << std::endl;
+  if (auto cert = fb.getCert(goal)) {
+    for (int i = 0; i < callDepth; i++) {
+      log << " ";
+    }
+    log << " - already calculated: " << *cert << std::endl;
+    return *cert;
+  }
+  
+  callDepth += 1;
 
   std::optional<float> cert;
   std::vector<Rule> conflictSet;
@@ -34,6 +44,8 @@ float InferenceEngine::verify(Fact goal) {
     }
     //std::cout << rule << " -- " << *cert << std::endl;
   }
+
+  callDepth -= 1;
 
   //std::cout << goal << " - " << cert.value() << std::endl;
   return fb.setCert(goal, cert.value_or(0.0f));

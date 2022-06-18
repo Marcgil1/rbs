@@ -1,6 +1,6 @@
 #include "defs.hxx"
 #include "factbase.hxx"
-#include "knowledgeBase.hxx"
+#include "knowledgebase.hxx"
 #include "inferenceengine.hxx"
 
 #include <fstream>
@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
   std::cout << "- Program execution --------------------" << std::endl;
   std::cout << "----------------------------------------" << std::endl;
 
-  InferenceEngine ie(fb, kb);
+  InferenceEngine ie(fb, kb, std::cerr);
   auto res = ie.verify(fb.getGoal());
 
   std::cout << "The fact " << fb.getGoal() << " has certainty " << res << std::endl;
