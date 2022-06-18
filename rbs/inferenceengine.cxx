@@ -10,14 +10,10 @@ InferenceEngine::InferenceEngine(FactBase fb, KnowledgeBase kb, std::ostream& lo
   : fb(fb), kb(kb), log(log), callDepth(0) {}
 
 float InferenceEngine::verify(Fact goal) {
-  for (int i = 0; i < callDepth; i++) {
-      log << " ";
-  }
+  printStackDepth();
   log << "- verifying goal [" << goal << "]" << std::endl;
   if (auto cert = fb.getCert(goal)) {
-    for (int i = 0; i < callDepth; i++) {
-      log << " ";
-    }
+    printStackDepth();
     log << " - already calculated: " << *cert << std::endl;
     return *cert;
   }
@@ -31,6 +27,11 @@ float InferenceEngine::verify(Fact goal) {
   while (not conflictSet.empty()) {
     auto rule = solve(conflictSet);
 
+    printStackDepth();
+    log << "- applying rule " << rule.id << " (" << rule.type << ")" << std::endl;
+
+    callDepth += 1;
+
     switch (rule.type) {
     case RuleType::SINGLETON:
       certaintyCombine(cert, certaintyChain(rule.cert, verify(rule.pre[0])));
@@ -42,12 +43,15 @@ float InferenceEngine::verify(Fact goal) {
       certaintyCombine(cert, certaintyChain(rule.cert, certaintyOr(rule.pre)));
       break;
     }
-    //std::cout << rule << " -- " << *cert << std::endl;
+
+    callDepth -= 1;
   }
 
+  printStackDepth();
+  log << "[" << goal << "] gets certainty " << cert.value_or(0.0f) << std::endl;
+  
   callDepth -= 1;
 
-  //std::cout << goal << " - " << cert.value() << std::endl;
   return fb.setCert(goal, cert.value_or(0.0f));
 }
 
@@ -83,11 +87,9 @@ float InferenceEngine::certaintyChain(float certRule, float cert) {
 
 void InferenceEngine::certaintyCombine(std::optional<float>& acc, float cert) {
   if (not acc.has_value()) {
-    //std::cout << "certComb( nullopt, " << cert << ")" << std::endl;
     acc = cert;
   } else {
     float val = acc.value();
-    //std::cout << "certComb( " << val << ", " << cert << ")";
 
     if (val >= 0 and cert >= 0) {
       acc = val + cert - val*cert;
@@ -96,6 +98,11 @@ void InferenceEngine::certaintyCombine(std::optional<float>& acc, float cert) {
     } else {
       acc = (val + cert) / (1 - std::min(std::abs(val), std::abs(cert)));
     }
-    //std::cout << " = " << *acc << std::endl;
+  }
+}
+
+void InferenceEngine::printStackDepth() {
+  for (int i = 0; i < callDepth; i++) {
+      log << "  ";
   }
 }
