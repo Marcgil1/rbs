@@ -30,7 +30,7 @@ float InferenceEngine::verify(Fact goal) {
     printStackDepth();
     log << "- applying rule " << rule.id << " (" << rule.type << ")" << std::endl;
 
-    callDepth rule.id << " gets certainty " << ruleCert << std::endl;;
+    callDepth += 1;
 
     auto ruleCert = 0.0f;
     switch (rule.type) {
