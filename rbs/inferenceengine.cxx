@@ -14,7 +14,7 @@ float InferenceEngine::verify(Fact goal) {
   log << "- verifying goal [" << goal << "]" << std::endl;
   if (auto cert = fb.getCert(goal)) {
     printStackDepth();
-    log << " - already calculated: " << *cert << std::endl;
+    log << "  - already calculated: " << *cert << std::endl;
     return *cert;
   }
   
@@ -30,19 +30,24 @@ float InferenceEngine::verify(Fact goal) {
     printStackDepth();
     log << "- applying rule " << rule.id << " (" << rule.type << ")" << std::endl;
 
-    callDepth += 1;
+    callDepth rule.id << " gets certainty " << ruleCert << std::endl;;
 
+    auto ruleCert = 0.0f;
     switch (rule.type) {
     case RuleType::SINGLETON:
-      certaintyCombine(cert, certaintyChain(rule.cert, verify(rule.pre[0])));
+      ruleCert = certaintyChain(rule.cert, verify(rule.pre[0]));
       break;
     case RuleType::AND:
-      certaintyCombine(cert, certaintyChain(rule.cert, certaintyAnd(rule.pre)));
+      ruleCert = certaintyChain(rule.cert, certaintyAnd(rule.pre));
       break;
     case RuleType::OR:
-      certaintyCombine(cert, certaintyChain(rule.cert, certaintyOr(rule.pre)));
+      ruleCert = certaintyChain(rule.cert, certaintyOr(rule.pre));
       break;
     }
+    certaintyCombine(cert, ruleCert);
+
+    printStackDepth();
+    log << rule.id << " gives certainty " << ruleCert << std::endl;
 
     callDepth -= 1;
   }
