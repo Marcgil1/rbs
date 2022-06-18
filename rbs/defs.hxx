@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ostream>
+#include <iostream>
 #include <vector>
 #include <string>
 
@@ -15,10 +15,12 @@ std::ostream &operator<<(std::ostream &os, RuleType type);
 
 // Rule -----------------------------------------------------------------------
 struct Rule {
+  std::string id;
   std::vector<Fact> pre;
   Fact pos;
   float cert;
   RuleType type = RuleType::SINGLETON;
 };
 
+std::istream &operator>>(std::istream &is, Rule &r);
 std::ostream &operator<<(std::ostream &os, Rule r);
