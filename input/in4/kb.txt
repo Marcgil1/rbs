@@ -1,0 +1,8 @@
+7
+R1: Si bajaAntiguedad Entonces esExperimentado, FC=0.5
+R2: Si altaAntiguedad Entonces esExperimentado, FC=0.9
+R3: Si conduccionCorta Entonces estaCansado, FC=0.5
+R4: Si conduccionLarga Entonces estaCansado, FC=1.0
+R5: Si esExperimentado y noViajaSolo Entonces esElCausante, FC=-0.5
+R6: Si estaCansado Entonces esElCausante, FC=0.5
+R7: Si esJoven y haBebido Entonces esElCausante, FC=0.7

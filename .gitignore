@@ -4,6 +4,8 @@
 #
 .build2/local/
 
+.DS_store
+
 # Compiler/linker output.
 #
 *.d

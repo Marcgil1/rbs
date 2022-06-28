@@ -1,0 +1,10 @@
+7
+bajaAntiguedad, FC=1
+altaAntiguedad, FC=-1
+conduccionCorta, FC=-1
+conduccionLarga, FC=1
+noViajaSolo, FC=-1
+esJoven, FC=0.4
+haBebido, FC=0.5
+Objetivo
+esElCausante
