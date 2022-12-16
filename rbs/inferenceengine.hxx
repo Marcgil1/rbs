@@ -12,14 +12,14 @@
 class InferenceEngine {
 public:
 
-  InferenceEngine(FactBase fb, KnowledgeBase kb, std::ostream& log);
+  InferenceEngine(FactBase& fb, KnowledgeBase& kb, std::ostream& log);
   float verify(Fact goal);
 
 private:
-  FactBase      fb;
-  KnowledgeBase kb;
-  std::ostream& log;
-  size_t        callDepth;
+  FactBase&      fb;
+  KnowledgeBase& kb;
+  std::ostream&  log;
+  size_t         callDepth;
 
   void printStackDepth();
   Rule solve(std::vector<Rule>& conflictSet);

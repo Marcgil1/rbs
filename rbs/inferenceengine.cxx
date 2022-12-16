@@ -6,7 +6,7 @@
 #include <limits>
 
 
-InferenceEngine::InferenceEngine(FactBase fb, KnowledgeBase kb, std::ostream& log)
+InferenceEngine::InferenceEngine(FactBase& fb, KnowledgeBase& kb, std::ostream& log)
   : fb(fb), kb(kb), log(log), callDepth(0) {}
 
 float InferenceEngine::verify(Fact goal) {
@@ -17,6 +17,7 @@ float InferenceEngine::verify(Fact goal) {
     log << "  - already calculated: " << *cert << std::endl;
     return *cert;
   }
+  
   
   callDepth += 1;
 
@@ -98,7 +99,7 @@ void InferenceEngine::certaintyCombine(std::optional<float>& acc, float cert) {
 
     if (val >= 0 and cert >= 0) {
       acc = val + cert - val*cert;
-    } else if (val <= 0 or cert <= 0) {
+    } else if (val <= 0 and cert <= 0) {
       acc = val + cert + val*cert;
     } else {
       acc = (val + cert) / (1 - std::min(std::abs(val), std::abs(cert)));
